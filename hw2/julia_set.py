@@ -2,7 +2,6 @@ import numpy as np
 
 
 def julia_set(c, lim, img_size, n_iterations):
-    # Create a grid of complex numbers
     x = np.linspace(-lim, lim, img_size)
     y = np.linspace(-lim, lim, img_size)
     Z = np.array(np.meshgrid(x, y)).T.reshape(-1, 2)

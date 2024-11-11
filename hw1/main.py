@@ -56,10 +56,7 @@ def create_bifurcation_plot():
     fig = go.Figure(go.Scatter(x=r, y=x, mode='markers', marker={'size': 2.5}))
     fig.update_layout(title=f'Bifurcation map', xaxis={'title': 'r'}, yaxis={'title': 'x'})
 
-    # fig.show()
-    # fig.show()
     fig.write_image(os.path.join(BASE_OUT_FOLDER, '3_bifurcation_plot.png'), width=1024, height=1024, scale=2)
-    # fig.write_html(os.path.join(BASE_OUT_FOLDER, '2_different_r_plot.html'))
 
 
 if __name__ == "__main__":
