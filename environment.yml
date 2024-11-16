@@ -33,5 +33,6 @@ dependencies:
     - python-dateutil==2.9.0.post0
     - python-dotenv==1.0.1
     - rootutils==1.0.7
+    - scipy==1.14.1
     - six==1.16.0
     - tenacity==9.0.0
