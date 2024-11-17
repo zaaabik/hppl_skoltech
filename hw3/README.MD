@@ -39,4 +39,5 @@ Different R plots:
 <img src="out/schelling_model_r=1.000.gif" height=512 width=768>
 
 Number of dissatisfied agents:
+
 <img src="out/num_of_dissatisfied_agents.png" height=512 width=768>
