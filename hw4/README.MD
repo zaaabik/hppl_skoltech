@@ -1,4 +1,4 @@
-### HW3 - Schelling model
+### HW4 - Spectrogram
 [Source of plots](out)
 
 Base signal:
