@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy as np
 from numpy import floating, ndarray
 from numpy.fft import fft, fftfreq

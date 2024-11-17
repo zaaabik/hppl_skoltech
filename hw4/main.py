@@ -13,7 +13,7 @@ root_path = rootutils.setup_root(__file__, indicator=".project-root", pythonpath
 from hw4.spectrogram import create_window_functions, spectrogram, apply_window_function_to_signal
 
 BASE_OUT_FOLDER = os.path.join(root_path, 'hw4', 'out')
-DEFAULT_PNG_ARGS = dict(width=1024, height=512, scale=4)
+DEFAULT_PNG_ARGS = dict(width=1024, height=768, scale=4)
 TIME_DOMAIN_AXIS = dict(layout_xaxis_title='Cycles', layout_yaxis_title='Amplitude')
 
 function_period = 2 * pi
@@ -34,7 +34,8 @@ def add_wave_packet(y: np.ndarray, frequency: float, time_shift: float) -> np.nd
     return y
 
 
-def add_wave_packet_fft(signal: np.ndarray[floating]):
+def add_wave_packet_fft(signal: np.ndarray[floating], t: np.ndarray[floating]):
+    sampling_rate = function_period / (t[1] - t[0])
     fig = go.Figure(go.Scatter(
         x=t / function_period, y=signal
     ), **TIME_DOMAIN_AXIS, layout_title='Signal', layout_yaxis_range=[-2, 2])
@@ -43,8 +44,20 @@ def add_wave_packet_fft(signal: np.ndarray[floating]):
         **DEFAULT_PNG_ARGS
     )
 
+    fft_values = fft(signal)
+    freqs = fftfreq(len(signal), d=1 / sampling_rate)
+    half_of_spectrum = len(freqs) // 2
+    fig_fft = go.Figure(
+        data=go.Scatter(x=freqs[:half_of_spectrum], y=np.abs(fft_values[:half_of_spectrum]), mode='lines'),
+        layout_title="FFT Spectrum",
+        layout_xaxis_title="Frequency",
+        layout_yaxis_title="Amplitude",
+        layout_xaxis_range=[0, 10]
+    )
+    fig_fft.write_image(os.path.join(BASE_OUT_FOLDER, 'fft.png'), **DEFAULT_PNG_ARGS)
+
     signal = add_wave_packet(signal, 4, 7)
-    sampling_rate = function_period / (t[1] - t[0])
+
     fig = go.Figure(go.Scatter(
         x=t / function_period, y=signal
     ), **TIME_DOMAIN_AXIS, layout_title='Signal with 4th wave packet', layout_yaxis_range=[-2, 2])
@@ -60,7 +73,7 @@ def add_wave_packet_fft(signal: np.ndarray[floating]):
         layout_yaxis_title="Amplitude",
         layout_xaxis_range=[0, 10]
     )
-    fig_fft.write_image(os.path.join(BASE_OUT_FOLDER, 'fft_spectrum_with_4th_wave_packet.png'), **DEFAULT_PNG_ARGS)
+    fig_fft.write_image(os.path.join(BASE_OUT_FOLDER, 'fft_with_4th_wave_packet.png'), **DEFAULT_PNG_ARGS)
     return signal
 
 
@@ -74,7 +87,7 @@ def plot_spectrogram(signal: np.ndarray[floating], t: np.ndarray[floating]):
     for window_function, window_position in zip(window_functions, window_positions):
         window_function_scatters.append(
             go.Scatter(x=t / function_period, y=window_function,
-                       name=f'Window position={window_position:.3f} cycles')
+                       name=f'Window position={window_position / function_period:.3f} cycles')
         )
     window_function_fig = go.Figure(window_function_scatters,
                                     layout_title='Window filters',
@@ -149,7 +162,7 @@ if __name__ == '__main__':
     signal, t = create_signal()
     # 1. Add 4th wave packet (frequency = 4 and time_shift = 7 cycles).
     # Demonstrate the effect on the plot of the FFT spectrum (1 point)
-    signal = add_wave_packet_fft(signal)
+    signal = add_wave_packet_fft(signal, t)
 
     # 2. Implement the spectrogram, show the effect of (1) on the spectrogram. Don’t forget to label the axes (2 points)
     plot_spectrogram(signal, t)
@@ -159,10 +172,3 @@ if __name__ == '__main__':
     # Measure the timing, can you explain the difference? Write something as a possible explanation. (2 points)
     measure_fft_time()
 
-    explanation = """
-    The timing difference occurs because FFT algorithms are optimized for input lengths that are powers of 2. 
-    When the input length is slightly off, such as 2**14 + 5 or 2**14 - 5, 
-    the algorithm requires more computational steps, resulting in longer processing time.
-    """
-
-    print(explanation)
