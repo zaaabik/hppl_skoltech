@@ -19,3 +19,15 @@ python hw1/main.py
 python hw2/main.py
 ```
 [Results](hw2/)
+
+### HW3 - Schelling model
+```bash
+python hw3/main.py
+```
+[Results](hw3/)
+
+### HW4 - Spectrogram
+```bash
+python hw4/main.py
+```
+[Results](hw4/)
