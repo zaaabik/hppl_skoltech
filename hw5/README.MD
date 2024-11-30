@@ -22,4 +22,4 @@ Bifurcation for Multiprocessing and Single Process:
 
 Spectrogram for Multiprocessing and Single Process:
 
-<img src="out/2_spectrogram_num_threads=0.png" width=512 height=512> <img src="out/2_spectrogram_num_threads=8.png" width=512 height=512>
+<img src="out/2_spectrogram_num_threads=0.png" width=512 height=256> <img src="out/2_spectrogram_num_threads=8.png" width=512 height=256>

@@ -58,7 +58,7 @@ def speedup_for_bifurcation():
                          array=std_time, color='purple',
                          thickness=1.5, width=3)
         ),
-        layout_title='Bifurcation speed up (Multithreading)',
+        layout_title='Bifurcation speed up (Multiprocessing)',
         layout_yaxis_title='Time (s)',
         layout_xaxis_title='Num processes'
     )
