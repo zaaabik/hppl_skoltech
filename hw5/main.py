@@ -109,7 +109,6 @@ def speedup_for_spectrum():
     signal, t = create_signal(2 ** 15)
 
     for worker_number in NUM_WORKERS:
-        print(worker_number)
         time = timeit.repeat(lambda:
                              plot_spectrogram(signal, t, num_workers=worker_number),
                              number=1, repeat=2)
