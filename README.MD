@@ -31,3 +31,9 @@ python hw3/main.py
 python hw4/main.py
 ```
 [Results](hw4/)
+
+### HW5 - Parallel bifurcation map and spectrogram
+```bash
+python hw5/main.py
+```
+[Results](hw5/)
