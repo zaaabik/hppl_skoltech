@@ -10,6 +10,10 @@ My PC has 6+2 cores:
 
 <img src="pc_spec.png">
 
+Function:
+
+<img src="out/function.png" width=1024 height=512>
+
 Integral Speedup:
 
 <img src="out/speed_up_vs_process.png" width=1024 height=512>

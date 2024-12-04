@@ -1,12 +1,12 @@
 import numpy as np
 
-A = 1.
-B = 2.
+A = -2
+B = 2
 N = 10 ** 6
 
 
 def FUNC(x):
-    return x ** 2 - np.log(np.sin(x)) + 0.3
+    return x ** 2 + 10 + np.sin(x) * 5
 
 
 def intergral(func, a: float, b: float, n: int):

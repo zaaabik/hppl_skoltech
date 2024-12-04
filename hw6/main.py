@@ -21,6 +21,18 @@ BASE_OUT_FOLDER = os.path.join(root_path, 'hw6', 'out')
 NUM_PROCESSES = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 20, 32]
 
 
+def plot_function():
+    x = np.linspace(A, B, N)
+    y = FUNC(x)
+    fig = go.Figure([
+        go.Scatter(
+            x=x, y=y
+        ),
+    ], layout_title='Function: y = x ** 2 + 10 + sin(x) * 5')
+    fig.write_image(os.path.join(BASE_OUT_FOLDER, f'function.png'),
+                    **DEFAULT_PNG_ARGS)
+
+
 def collect_results():
     files = glob(os.path.join(BASE_OUT_FOLDER, '*result*.csv'))
     all_dfs = []
@@ -98,33 +110,35 @@ def collect_results():
 
 
 if __name__ == "__main__":
-    # os.makedirs(BASE_OUT_FOLDER, exist_ok=True)
-    # single_process_result = intergral(FUNC, A, B, N)
-    # single_process_time = timeit.repeat(lambda:
-    #                                     intergral(FUNC, A, B, N),
-    #                                     number=1, repeat=4)
-    # single_process_res_dict = {'method': 'single_process',
-    #                            'time_mean': float(np.mean(single_process_time)),
-    #                            'time_std': float(np.std(single_process_time)),
-    #                            'result': single_process_result}
-    #
-    # library_integral, _ = quad(FUNC, A, B)
-    # library_time = timeit.repeat(lambda: quad(FUNC, A, B), number=1, repeat=4)
-    # library_res_dict = {'method': 'library',
-    #                     'time_mean': float(np.mean(library_time)),
-    #                     'time_std': float(np.std(library_time)),
-    #                     'result': library_integral}
-    #
-    # df = pd.DataFrame([
-    #     single_process_res_dict, library_res_dict
-    # ], index=None)
-    # df.to_csv(
-    #     os.path.join(
-    #         BASE_OUT_FOLDER, 'result_main_process.csv'
-    #     ), index=None
-    # )
-    #
-    # for num_process in tqdm(NUM_PROCESSES):
-    #     subprocess.run(["mpirun", "-n", str(num_process), "python", "hw6/mpi_integral.py"])
+    os.makedirs(BASE_OUT_FOLDER, exist_ok=True)
+    plot_function()
+    single_process_result = intergral(FUNC, A, B, N)
+    single_process_time = timeit.repeat(lambda:
+                                        intergral(FUNC, A, B, N),
+                                        number=1, repeat=4)
+    single_process_res_dict = {'method': 'single_process',
+                               'time_mean': float(np.mean(single_process_time)),
+                               'time_std': float(np.std(single_process_time)),
+                               'result': single_process_result}
+
+    library_integral, _ = quad(FUNC, A, B)
+    library_time = timeit.repeat(lambda: quad(FUNC, A, B), number=1, repeat=4)
+    library_res_dict = {'method': 'library',
+                        'time_mean': float(np.mean(library_time)),
+                        'time_std': float(np.std(library_time)),
+                        'result': library_integral}
+
+    df = pd.DataFrame([
+        single_process_res_dict, library_res_dict
+    ], index=None)
+
+    df.to_csv(
+        os.path.join(
+            BASE_OUT_FOLDER, 'result_main_process.csv'
+        ), index=None
+    )
+
+    for num_process in tqdm(NUM_PROCESSES):
+        subprocess.run(["mpirun", "-n", str(num_process), "python", "hw6/mpi_integral.py"])
 
     collect_results()
