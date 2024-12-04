@@ -32,11 +32,11 @@ def collect_results():
     mpi_results = total_result_df.loc[
         total_result_df['method'].isin(['mpi', 'single_process'])
     ]
-    mpi_results.loc['num_process'] = mpi_results['num_process'].fillna(0)
+    mpi_results['num_process'] = mpi_results['num_process'].fillna(0)
     mpi_results = mpi_results.sort_values('num_process')
     seq_program_time = mpi_results.loc[mpi_results['method'] == 'single_process']['time_mean'].values[0]
     seq_program_value = total_result_df.loc[total_result_df['method'] == 'library']['result'].values[0]
-    result_diff = mpi_results['result'] - seq_program_value
+    result_diff = abs(seq_program_value - mpi_results['result'])
 
     diff_figure = go.Figure([
         go.Scatter(
@@ -45,11 +45,18 @@ def collect_results():
             yaxis="y1",
         ),
     ],
-        layout_title='Difference between out implementation and function from library',
+        layout_title='ABS error between our implementation and function from library',
         layout_yaxis_title='Difference',
         layout_xaxis_title='Num processes'
     )
-    diff_figure.write_image(os.path.join(BASE_OUT_FOLDER, f'4_difference_of_result.png'),
+    diff_figure.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=mpi_results['num_process'],
+            ticktext=['Main process only'] + list(mpi_results['num_process'].values[1:])
+        )
+    )
+    diff_figure.write_image(os.path.join(BASE_OUT_FOLDER, f'difference_of_result.png'),
                             **DEFAULT_PNG_ARGS)
 
     fig = go.Figure([
@@ -83,41 +90,41 @@ def collect_results():
         yaxis4=dict(
             side="right",
             title='Speed up coefficient',
-            # anchor="free",
             overlaying="y",
         )
     )
-    fig.write_image(os.path.join(BASE_OUT_FOLDER, f'4_speed_up_vs_process.png'),
+    fig.write_image(os.path.join(BASE_OUT_FOLDER, f'speed_up_vs_process.png'),
                     **DEFAULT_PNG_ARGS)
 
 
 if __name__ == "__main__":
-    os.makedirs(BASE_OUT_FOLDER, exist_ok=True)
-    single_process_result = intergral(FUNC, A, B, N)
-    single_process_time = timeit.repeat(lambda:
-                                        intergral(FUNC, A, B, N),
-                                        number=1, repeat=4)
-    single_process_res_dict = {'method': 'single_process',
-                               'time_mean': float(np.mean(single_process_time)),
-                               'time_std': float(np.std(single_process_time)),
-                               'result': single_process_result}
-
-    library_integral, _ = quad(FUNC, A, B)
-    library_time = timeit.repeat(lambda: quad(FUNC, A, B), number=1, repeat=4)
-    library_res_dict = {'method': 'library',
-                        'time_mean': float(np.mean(library_time)),
-                        'time_std': float(np.std(library_time)),
-                        'result': library_integral}
-
-    df = pd.DataFrame([
-        single_process_res_dict, library_res_dict
-    ], index=None)
-    df.to_csv(
-        os.path.join(BASE_OUT_FOLDER, 'result_main_process.csv')
-        , index=None
-    )
-
-    for num_process in tqdm(NUM_PROCESSES):
-        subprocess.run(["mpirun", "-n", str(num_process), "python", "hw6/mpi_integral.py"])
+    # os.makedirs(BASE_OUT_FOLDER, exist_ok=True)
+    # single_process_result = intergral(FUNC, A, B, N)
+    # single_process_time = timeit.repeat(lambda:
+    #                                     intergral(FUNC, A, B, N),
+    #                                     number=1, repeat=4)
+    # single_process_res_dict = {'method': 'single_process',
+    #                            'time_mean': float(np.mean(single_process_time)),
+    #                            'time_std': float(np.std(single_process_time)),
+    #                            'result': single_process_result}
+    #
+    # library_integral, _ = quad(FUNC, A, B)
+    # library_time = timeit.repeat(lambda: quad(FUNC, A, B), number=1, repeat=4)
+    # library_res_dict = {'method': 'library',
+    #                     'time_mean': float(np.mean(library_time)),
+    #                     'time_std': float(np.std(library_time)),
+    #                     'result': library_integral}
+    #
+    # df = pd.DataFrame([
+    #     single_process_res_dict, library_res_dict
+    # ], index=None)
+    # df.to_csv(
+    #     os.path.join(
+    #         BASE_OUT_FOLDER, 'result_main_process.csv'
+    #     ), index=None
+    # )
+    #
+    # for num_process in tqdm(NUM_PROCESSES):
+    #     subprocess.run(["mpirun", "-n", str(num_process), "python", "hw6/mpi_integral.py"])
 
     collect_results()
