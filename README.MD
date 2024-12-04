@@ -37,3 +37,9 @@ python hw4/main.py
 python hw5/main.py
 ```
 [Results](hw5/)
+
+### HW6 - Integral
+```bash
+python hw6/main.py
+```
+[Results](hw6/)

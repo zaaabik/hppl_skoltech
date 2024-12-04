@@ -1,12 +1,20 @@
 name: hppl_skoltech_2024
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - bzip2=1.0.8=h80987f9_6
-  - ca-certificates=2024.9.24=hca03da5_0
+  - ca-certificates=2024.8.30=hf0a4a13_0
+  - libcxx=19.1.4=ha82da77_0
   - libffi=3.4.4=hca03da5_1
+  - libgfortran=5.0.0=13_2_0_hd922786_3
+  - libgfortran5=13.2.0=hf226fd6_3
+  - llvm-openmp=19.1.4=hdb05f8b_0
+  - mpi=1.0=mpich
+  - mpi4py=3.1.4=py311h5a14b7f_0
+  - mpich=3.3.2=he2630cc_1
   - ncurses=6.4=h313beb8_0
-  - openssl=3.0.15=h80987f9_0
+  - openssl=3.4.0=h39f12f2_0
   - pip=24.2=py311hca03da5_0
   - python=3.11.10=hb885b13_0
   - readline=8.2=h1a28f6b_0
