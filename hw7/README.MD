@@ -1,7 +1,4 @@
 ### HW7 - Column wise shift
-```bash
-python hw7/main.py
-```
 [Source of plots](out)
 
 Non parallel implementation:

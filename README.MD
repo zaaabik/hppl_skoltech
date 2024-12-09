@@ -43,3 +43,9 @@ python hw5/main.py
 python hw6/main.py
 ```
 [Results](hw6/)
+
+### HW7 - Column wise shift
+```bash
+python hw7/main.py
+```
+[Results](hw7/)
