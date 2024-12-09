@@ -39,11 +39,9 @@ def get_columns_per_rank(local_rank, world_size, total_columns):
 
 
 if __name__ == '__main__':
-    # Load the image and start the MPI process
     image = Image.open(os.path.join(root_path, 'hw7', "img.png"))
     image_array = np.array(image)
 
-    # Only rank 0 should execute the visualization code
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()

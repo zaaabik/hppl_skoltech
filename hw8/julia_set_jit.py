@@ -24,8 +24,4 @@ def julia_set_jit(c, lim, img_size, n_iterations):
                     Z[i, j] = Z[i, j] ** 2 + c
                     iteration_counts[i, j] += 1
 
-                    # mask = np.abs(Z) <= 2
-                    # iteration_counts[mask] += 1
-                    # Z[mask] = Z[mask] ** 2 + c
-
     return iteration_counts.T
