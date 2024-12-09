@@ -7,7 +7,7 @@ def julia_set(c, lim, img_size, n_iterations):
     Z = np.array(np.meshgrid(x, y)).T.reshape(-1, 2)
     Z = Z[:, 0] + 1j * Z[:, 1]
 
-    iteration_counts = np.zeros(Z.shape, dtype=int)
+    iteration_counts = np.zeros(Z.shape, dtype=np.int32)
 
     for i in range(n_iterations):
         mask = np.abs(Z) <= 2
