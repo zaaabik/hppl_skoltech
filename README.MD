@@ -49,3 +49,20 @@ python hw6/main.py
 python hw7/main.py
 ```
 [Results](hw7/)
+
+### HW8 - Jitted Mandelbrot set
+```bash
+python hw8/main.py
+```
+[Results](hw8/)
+
+### HW9 - Saxpy + CuPy Bifurcation
+```bash
+conda env create --name hppl_gpu -f environment_gpuenvironment_gpu.yml
+conda activate hppl_gpu
+```
+
+```bash
+python hw9/main.py
+```
+[Results](hw9/)

@@ -1,4 +1,4 @@
-### HW7 - Jitted Mandelbrot set
+### HW8 - Jitted Mandelbrot set
 [Source of plots](out)
 
 Numba vs Original implementation:
