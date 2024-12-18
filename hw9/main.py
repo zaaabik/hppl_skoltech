@@ -27,12 +27,13 @@ def logistic_map_cp(x, r):
 def get_bifurcation_data_cp(x0, r_values, n, m):
     total_x = []
     total_r = []
-    res = r_values.copy()
+    res = cp.full_like(r_values, x0)
+
     for i in range(n):
-        res = logistic_map_cp(x0, res)
+        res = logistic_map_cp(res, r_values)
 
     for i in range(m):
-        res = logistic_map_cp(x0, res)
+        res = logistic_map_cp(res, r_values)
         total_x.append(res.copy())
         total_r.append(r_values.copy())
     return cp.concatenate(total_x), cp.concatenate(total_r)
@@ -193,5 +194,6 @@ if __name__ == '__main__':
     os.makedirs(BASE_OUT_FOLDER, exist_ok=True)
     measure_time()
     measure_bifurcation()
+
 
 
